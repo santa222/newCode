@@ -5,4 +5,8 @@
     <string name="app_name">签到APP</string>
     <string name="scan_text">将二维码放入框内, 即可自动扫描</string>
 
+    <string name="menu_update">同步数据</string>
+    <string name="menu_clear">清除数据</string>
+    <string name="menu_import">导入数据</string>
+
 </resources>

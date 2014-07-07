@@ -14,8 +14,6 @@ import com.mika.newcode.R;
 
 public class MainActivity extends Activity {
     private TextView resultTextView;
-    private EditText qrStrEditText;
-    private ImageView qrImgImageView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
