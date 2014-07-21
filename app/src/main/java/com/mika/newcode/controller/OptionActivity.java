@@ -8,11 +8,47 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
 import com.mika.newcode.R;
+import com.mika.newcode.adapters.ExpandableDrawerListAdapter;
+import com.mika.newcode.builders.DynamicContentTaskBuilder;
+import com.mika.newcode.database.CheckInDao;
+import com.mika.newcode.models.AllData;
+import com.mika.newcode.models.Meeting;
+import com.mika.newcode.network.request.GetDynamicContent;
+import com.mika.newcode.network.request.TaskListener;
+import com.mika.newcode.utils.Constants;
+
+import org.apache.http.client.methods.HttpGet;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class OptionActivity extends Activity {
-    private TextView resultTextView;
+   // private TextView resultTextView;
+    private CheckInDao checkInDao;
+
+
+    //获取数据成功
+    private TaskListener<AllData> onTaskListener = new TaskListener<AllData>() {
+        @Override
+        public void onTaskSuccess(AllData result) {
+            if (result != null) {
+                storeData(result);
+
+            }
+        }
+
+        @Override
+        public void onTaskFailure(Exception e) { }
+
+        @Override
+        public void onTaskCancelled() {}
+
+        @Override
+        public void onTaskTimeOut() { }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,12 +82,15 @@ public class OptionActivity extends Activity {
             }
         });
 
+        checkInDao=new CheckInDao(getApplicationContext());
+
     }
 
 
     //clear database
     private void clearDB(){
         Log.v("222","clearDB");
+        checkInDao.deleteAll();
     }
 
     //update database
@@ -61,7 +100,30 @@ public class OptionActivity extends Activity {
 
     //import database
     private void importDB(){
+        clearDB();
         Log.v("222","updateDB");
+        makeRequest();
+    }
+
+    private void makeRequest(){
+        GetDynamicContent<AllData> mobileMenusTask = new DynamicContentTaskBuilder<AllData>()
+                .withContext(OptionActivity.this)
+                .withPath(Constants.URL_PATH)
+                .withMethod(HttpGet.METHOD_NAME)
+                .withTaskListener(onTaskListener)
+                .withType(new TypeToken<AllData>() {
+                }.getType())
+                .build();
+        mobileMenusTask.execute();
+    }
+
+    private void storeData(AllData result){
+        List<Meeting> meetings = result.getMeetings();
+        for (Meeting meeting:meetings) {
+            checkInDao.insertToMeeting(meeting.getMid(),meeting.getName());
+        }
+
+        checkInDao.printData();
     }
 
 

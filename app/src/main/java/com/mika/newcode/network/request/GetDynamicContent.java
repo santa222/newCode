@@ -54,7 +54,7 @@ public class GetDynamicContent<T> extends CaptiveReachRequest<T> {
     @Override
     protected String getRequestUrl() throws Exception {
         String dynamicContentUrl  = SettingsUtils.getBaseRestUrl(context) + permanent_link;
-
+        Log.v("222",dynamicContentUrl);
        /* if (filterRequest != null) {
             dynamicContentUrl += "/filter";
         }

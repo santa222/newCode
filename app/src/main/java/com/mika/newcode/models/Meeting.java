@@ -9,16 +9,16 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Meeting{
     @SerializedName("mid")
-    protected String mid;
+    protected int mid;
     @SerializedName("name")
     protected String name;
 
 
-    public String getMid() {
+    public int getMid() {
         return mid;
     }
 
-    public void setMid(String mid) {
+    public void setMid(int mid) {
         this.mid = mid;
     }
 
