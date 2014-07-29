@@ -1,20 +1,23 @@
 package com.mika.newcode.controller;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-
+import android.widget.ImageView;
+import android.widget.Toast;
 import com.google.gson.reflect.TypeToken;
 import com.mika.newcode.R;
-import com.mika.newcode.adapters.ExpandableDrawerListAdapter;
 import com.mika.newcode.builders.DynamicContentTaskBuilder;
 import com.mika.newcode.database.CheckInDao;
 import com.mika.newcode.models.AllData;
+import com.mika.newcode.models.GiftRole;
 import com.mika.newcode.models.Meeting;
+import com.mika.newcode.models.User;
+import com.mika.newcode.models.UserRole;
 import com.mika.newcode.network.request.GetDynamicContent;
 import com.mika.newcode.network.request.TaskListener;
 import com.mika.newcode.utils.Constants;
@@ -26,9 +29,14 @@ import java.util.List;
 
 
 public class OptionActivity extends Activity {
-   // private TextView resultTextView;
     private CheckInDao checkInDao;
+    private DialogState currentState=null;
 
+    public enum DialogState{
+        Clear,
+        Download,
+        Upload,
+    }
 
     //获取数据成功
     private TaskListener<AllData> onTaskListener = new TaskListener<AllData>() {
@@ -36,7 +44,6 @@ public class OptionActivity extends Activity {
         public void onTaskSuccess(AllData result) {
             if (result != null) {
                 storeData(result);
-
             }
         }
 
@@ -55,30 +62,55 @@ public class OptionActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_option);
 
-       Button clearButton = (Button) this.findViewById(R.id.option_clear_btn);
+        ImageView clearButton = (ImageView) this.findViewById(R.id.option_clear_iv);
         clearButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                clearDB();
+                //clearDB();
+                currentState=DialogState.Clear;
+                showDialog();
             }
         });
 
-        Button updateButton = (Button) this.findViewById(R.id.option_update_btn);
-        updateButton.setOnClickListener(new View.OnClickListener() {
+
+
+        ImageView uploadButton = (ImageView) this.findViewById(R.id.option_upload_iv);
+        uploadButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                updateDB();
+                currentState=DialogState.Upload;
+                showDialog();
             }
         });
 
-        final Button importButton = (Button) this.findViewById(R.id.option_import_btn);
-        importButton.setOnClickListener(new View.OnClickListener() {
+        ImageView downloadButton = (ImageView) this.findViewById(R.id.option_download_iv);
+        downloadButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                importDB();
+                currentState=DialogState.Download;
+                showDialog();
+            }
+        });
+
+        ImageView searchButton = (ImageView) this.findViewById(R.id.option_search_iv);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //downloadDB();
+                startActivity(new Intent(OptionActivity.this, SearchListActivity.class));
+            }
+        });
+
+        ImageView meetingButton = (ImageView) this.findViewById(R.id.option_meeting_iv);
+        meetingButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(OptionActivity.this, MeetingListActivity.class));
             }
         });
 
@@ -94,14 +126,15 @@ public class OptionActivity extends Activity {
     }
 
     //update database
-    private void updateDB(){
+    private void uploadDB(){
         Log.v("222","updateDB");
+
     }
 
     //import database
-    private void importDB(){
+    private void downloadDB(){
         clearDB();
-        Log.v("222","updateDB");
+        checkInDao.createTable();
         makeRequest();
     }
 
@@ -123,8 +156,70 @@ public class OptionActivity extends Activity {
             checkInDao.insertToMeeting(meeting.getMid(),meeting.getName());
         }
 
-        checkInDao.printData();
+        List<User> users = result.getUsers();
+        for (User aUser:users) {
+            checkInDao.insertToUser(aUser.getUid(), aUser.getName(), aUser.getCompany(),aUser.getAccount(),aUser.getEmail());
+        }
+        List<UserRole> userRoles = result.getUserRoles();
+        for (UserRole aUserRole:userRoles) {
+            checkInDao.insertToUserRole(aUserRole.getRid(), aUserRole.getUid());
+        }
+        List<GiftRole> giftRoles = result.getGiftRoles();
+        for (GiftRole giftRole:giftRoles) {
+            checkInDao.insertToGiftRole(giftRole.getGid(), giftRole.getRid());
+        }
+/*
+
+        List<Event> events = result.getEvents();
+        for (Event aEvent:events) {
+            checkInDao.insertToEvent(aEvent.getEid(),aEvent.getUid(),aEvent.getJoined(),aEvent.getJoined_time(),aEvent.getMid());
+        }
+*/
+
+        //checkInDao.printData();
+
+        Toast.makeText(OptionActivity.this,getResources().getString(R.string.download_success),Toast.LENGTH_LONG).show();
     }
 
+
+    private void showDialog(){
+        String title,content="";
+        if(currentState==DialogState.Clear){
+            title="";
+            content=getString(R.string.confirm_clear);
+        }else if(currentState==DialogState.Upload){
+            title="";
+            content=getString(R.string.confirm_download);
+        }else if(currentState==DialogState.Download){
+            title="";
+            content=getString(R.string.confirm_download);
+        }
+
+
+        new AlertDialog.Builder(OptionActivity.this)
+                //.setTitle(title)
+                .setMessage(content)
+                .setPositiveButton("是", pListener)
+                .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        currentState=null;
+                    }
+                })
+                .show();
+    }
+
+    private DialogInterface.OnClickListener pListener=new DialogInterface.OnClickListener(){
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            if(currentState==DialogState.Clear){
+                clearDB();
+            }else if(currentState==DialogState.Upload){
+                uploadDB();
+            }else if(currentState==DialogState.Download){
+                downloadDB();
+            }
+        }
+    };
 
 }

@@ -1,6 +1,8 @@
 package com.mika.newcode.controller;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,10 +38,12 @@ public class MeetingListActivity extends Activity {
     private ExpandableDrawerListAdapter drawerAdapter;
     private CheckInDao checkInDao;
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list);
+        setContentView(R.layout.activity_meeting);
         checkInDao=new CheckInDao(this);
         expandableListView = (ExpandableListView) this.findViewById(R.id.list_expandableListView);
         getMeetingData();
@@ -54,16 +58,16 @@ public class MeetingListActivity extends Activity {
                 return false;
             }
         });
-        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+       /* expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Log.v("222","child Click: "+groupPosition+","+childPosition);
                 return false;
             }
         });
-
+*/
         //设置按钮
-        Button mButtonSetting = (Button) findViewById(R.id.btn_list_setting);
+       /* Button mButtonSetting = (Button) findViewById(R.id.btn_list_setting);
         mButtonSetting.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -72,14 +76,13 @@ public class MeetingListActivity extends Activity {
                 Intent resultIntent = new Intent(MeetingListActivity.this,OptionActivity.class);
                 startActivity(resultIntent);
             }
-        });
+        });*/
 
     }
 
     private void selectItem(int groupPosition){
         Meeting selectedMeeting=menu.get(groupPosition);
         String meetingName=selectedMeeting.getName();
-
 
         Intent resultIntent = new Intent(MeetingListActivity.this,MipcaActivityCapture.class);
         Bundle bundle = new Bundle();
@@ -93,14 +96,23 @@ public class MeetingListActivity extends Activity {
     private void getMeetingData(){
         menu=new ArrayList<Meeting>();
         menuChilds=new HashMap<Meeting, List<Meeting>>();
-
-        menu=checkInDao.getAllMeetings();
+        Meeting mainMeeting=new Meeting();
+        mainMeeting.setName("主会议");
+        mainMeeting.setMid(10000000);
+        menu.add(mainMeeting);
+       // checkInDao.printData();
+        menu.addAll(checkInDao.getAllMeetings());
         for (int i = 0; i < menu.size(); i++) {
             menuChilds.put(menu.get(i), new ArrayList<Meeting>());
         }
 
-        drawerAdapter = new ExpandableDrawerListAdapter(MeetingListActivity.this,menu, menuChilds);
-        expandableListView.setAdapter(drawerAdapter);
+        if(drawerAdapter==null){
+            drawerAdapter = new ExpandableDrawerListAdapter(MeetingListActivity.this,menu, menuChilds);
+            expandableListView.setAdapter(drawerAdapter);
+        }else{
+            drawerAdapter.notifyDataSetChanged();
+        }
+
        /* if (resultContent == null || resultContent.size() == 0) {
             // getListView().setEmptyView(findView(getView(), R.id.fragment_list_poi_empty_prompt));
         } else {

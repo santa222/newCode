@@ -3,29 +3,71 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ffe1e0de" >
+    android:background="#ffe1e0de"
+    android:weightSum="1">
 
-    <Button
-        android:id="@+id/option_import_btn"
-        android:layout_width="fill_parent"
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/option_meeting_iv"
+        android:background="@drawable/meeting"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="69dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:text="@string/menu_import"
-        android:layout_marginTop="200dp" />
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center_horizontal">
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/option_download_iv"
+            android:background="@drawable/download"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp" />
 
+        <ImageView
+            android:layout_width="115dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bizcom_logo"
+            android:layout_margin="10dp"
+            android:layout_gravity="center_vertical" />
 
-    <Button
-        android:id="@+id/option_update_btn"
-        android:layout_width="fill_parent"
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/option_upload_iv"
+            android:background="@drawable/upload"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/menu_update"
-        android:layout_centerHorizontal="true" />
+        android:layout_weight="1"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center_horizontal">
 
-    <Button
-        android:id="@+id/option_clear_btn"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/menu_clear"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/option_clear_iv"
+            android:background="@drawable/clear"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/option_search_iv"
+            android:background="@drawable/search"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp" />
+
+    </LinearLayout>
+
 </LinearLayout>
