@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/mmtitle_bg_alpha" >
+
+    <Button
+        android:id="@+id/button_back"
+        android:layout_width="75.0dip"
+        android:text="返回"
+        android:background="@drawable/mm_title_back_btn"
+        android:textColor="@android:color/white"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="2dip" />
+
+
+    <EditText
+        android:id="@+id/actionbar_search_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/button_back"
+        android:paddingLeft="30dp"
+        android:drawablePadding="10dp"
+        android:background="#ffffffff"
+        android:hint="@string/search_term"
+        style="@style/Search"
+        android:layout_margin="15dp"
+        android:singleLine="true" />
+
+
+    <ImageView
+        android:id="@+id/actionbar_search_search_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/button_back"
+        android:paddingLeft="20dp"
+        android:background="@drawable/ic_search_pressed"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp" />
+
+
+
+</RelativeLayout>

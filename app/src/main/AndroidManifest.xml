@@ -23,8 +23,12 @@
         </activity>
 
         <activity
-            android:name=".controller.OptionActivity"/>
-
+            android:name=".controller.OptionActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
 
         <activity
@@ -37,10 +41,10 @@
 
         <activity
             android:name=".controller.MeetingListActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter> >
+        </activity>
+
+        <activity
+            android:name=".controller.SearchListActivity">
         </activity>
 
         <activity

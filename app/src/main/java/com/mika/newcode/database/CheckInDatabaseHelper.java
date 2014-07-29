@@ -3,6 +3,7 @@ package com.mika.newcode.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by hugo on 7/11/14.
@@ -22,7 +23,22 @@ public class CheckInDatabaseHelper extends SQLiteOpenHelper{
             "CREATE TABLE "+ CheckInDao.TABLE_USER +
                     "("+ CheckInDao.KEY_USER_ID + " INTEGER PRIMARY KEY, "
                     + CheckInDao.KEY_USER_NAME  + " text, "
+                    + CheckInDao.KEY_USER_ACCOUNT  + " text, "
                     + CheckInDao.KEY_USER_COMPANY + " text "
+                    +");";
+
+    private static final String CREATE_USER_ROLE_TABLE =
+            "CREATE TABLE "+ CheckInDao.TABLE_USER_ROLE +
+                    "("+ CheckInDao.KEY_ID + " INTEGER PRIMARY KEY, "
+                    + CheckInDao.KEY_USER_ID  + " INTEGER, "
+                    + CheckInDao.KEY_ROLE_ID  + " INTEGER "
+                    +");";
+
+    private static final String CREATE_GIFT_ROLE_TATLE =
+            "CREATE TABLE "+ CheckInDao.TABLE_GIFT_ROLE +
+                    "("+ CheckInDao.KEY_ID + " INTEGER PRIMARY KEY, "
+                    + CheckInDao.KEY_GIFT_ID + " INTEGER, "
+                    + CheckInDao.KEY_ROLE_ID  + " INTEGER "
                     +");";
 
     private static final String CREATE_EVENT_TABLE =
@@ -33,6 +49,7 @@ public class CheckInDatabaseHelper extends SQLiteOpenHelper{
                     + CheckInDao.KEY_USER_ID + " INTEGER, "
                     + CheckInDao.KEY_MEETING_ID + " INTEGER "
                     +");";
+
 
     public CheckInDatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -49,13 +66,18 @@ public class CheckInDatabaseHelper extends SQLiteOpenHelper{
         deleteTable(db,CheckInDao.TABLE_USER);
         deleteTable(db,CheckInDao.TABLE_MEETING);
         deleteTable(db,CheckInDao.TABLE_EVENT);
+        deleteTable(db,CheckInDao.TABLE_GIFT_ROLE);
+        deleteTable(db,CheckInDao.TABLE_USER_ROLE);
         onCreate(db);
     }
 
     public void createTable(SQLiteDatabase db){
+        Log.v("222","createTable");
         db.execSQL(CREATE_USER_TABLE);
         db.execSQL(CREATE_EVENT_TABLE);
         db.execSQL(CREATE_MEETING_TABLE);
+        db.execSQL(CREATE_GIFT_ROLE_TATLE);
+        db.execSQL(CREATE_USER_ROLE_TABLE);
     }
 
     public void deleteTable(SQLiteDatabase db,String $table_name){

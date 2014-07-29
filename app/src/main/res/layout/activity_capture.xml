@@ -23,7 +23,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            layout="@layout/activity_title" />
+            layout="@layout/actionbar_search" />
     </RelativeLayout>
 
 </FrameLayout>
