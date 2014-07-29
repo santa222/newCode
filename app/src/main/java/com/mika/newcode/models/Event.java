@@ -6,30 +6,40 @@ import com.google.gson.annotations.SerializedName;
  * Created by mika_1990 on 14-7-3.
  */
 public class Event {
+    @SerializedName("eid")
+    protected int eid;
     @SerializedName("uid")
-    protected String uid;
+    protected int uid;
     @SerializedName("joined")
-    protected String joined;
+    protected int joined;
     @SerializedName("joined_time")
     protected String joined_time;
     @SerializedName("mid")
-    protected String mid;
+    protected int mid;
 
 
-    public String getUid() {
+    public int getUid() {
         return uid;
     }
 
-    public void setUid(String uid) {
+    public void setUid(int uid) {
         this.uid = uid;
     }
 
+    public int getEid() {
+        return eid;
+    }
 
-    public String getJoined() {
+    public void setEid(int eid) {
+        this.eid = eid;
+    }
+
+
+    public int getJoined() {
         return joined;
     }
 
-    public void setJoined(String joined) {
+    public void setJoined(int joined) {
         this.joined = joined;
     }
 
@@ -43,11 +53,11 @@ public class Event {
     }
 
 
-    public String getMid() {
+    public int getMid() {
         return mid;
     }
 
-    public void setMid(String mid) {
+    public void setMid(int mid) {
         this.mid = mid;
     }
 
