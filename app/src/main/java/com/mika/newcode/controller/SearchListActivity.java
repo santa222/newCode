@@ -3,6 +3,7 @@ package com.mika.newcode.controller;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -40,10 +41,12 @@ public class SearchListActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 User selectedUser=users.get(position);
-                Bundle bundle=new Bundle();
+               /* Bundle bundle=new Bundle();
                 bundle.putParcelable(Constants.KEY_USER_INFO,selectedUser);
-                Intent intent=new Intent(SearchListActivity.this, MeetingListActivity.class);
-                intent.putExtras(bundle);
+                bundle.putInt("testINT",33);*/
+                Log.v("222", selectedUser.getName());
+                Intent intent=new Intent(SearchListActivity.this, UserDetailActivity.class);
+                //intent.putExtras(bundle);
                 startActivity(intent);
 
 
@@ -114,22 +117,4 @@ public class SearchListActivity extends Activity {
         }
     }
 
-    
-/*
-    private void getMeetingData(){
-        users=new ArrayList<User>();
-
-       // checkInDao.printData();
-        users.addAll(checkInDao.getAllUsers());
-        for (int i = 0; i < users.size(); i++) {
-            menuChilds.put(users.get(i), new ArrayList<User>());
-        }
-
-        if(userListAdapter==null){
-            userListAdapter = new ExpandableDrawerListAdapter(SearchListActivity.this,users, menuChilds);
-            userListView.setAdapter(userListAdapter);
-        }else{
-            userListAdapter.notifyDataSetChanged();
-        }
-    }*/
 }
