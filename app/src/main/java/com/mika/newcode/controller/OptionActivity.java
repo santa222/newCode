@@ -158,7 +158,7 @@ public class OptionActivity extends Activity {
 
         List<User> users = result.getUsers();
         for (User aUser:users) {
-            checkInDao.insertToUser(aUser.getUid(), aUser.getName(), aUser.getCompany(),aUser.getAccount(),aUser.getEmail());
+            checkInDao.insertToUser(aUser.getUid(), aUser.getName(), aUser.getCompany(),aUser.getAccount(),aUser.getEmail(),aUser.getMobilePhone());
         }
         List<UserRole> userRoles = result.getUserRoles();
         for (UserRole aUserRole:userRoles) {

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.mika.newcode.models.Gift;
 import com.mika.newcode.models.Meeting;
 import com.mika.newcode.models.User;
 
@@ -23,6 +24,8 @@ public class CheckInDao {
     public static final String TABLE_USER          = "user_table";
     public static final String TABLE_USER_ROLE     = "user_role_table";
     public static final String TABLE_GIFT_ROLE     = "gift_role_table";
+    public static final String TABLE_GIFT           = "gift_table";
+    public static final String TABLE_ROLE           = "role_table";
 
     public static final String KEY_MEETING_ID       = "mid";
     public static final String KEY_MEETING_NAME     = "meeting_name";
@@ -34,10 +37,13 @@ public class CheckInDao {
     public static final String KEY_USER_COMPANY      = "company";
     public static final String KEY_USER_ACCOUNT      = "account";
     public static final String KEY_USER_EMAIL      = "email";
+    public static final String KEY_USER_PHONE      = "phone";
 
     public static final String KEY_EVENT_ID      = "eid";
     public static final String KEY_ROLE_ID      = "rid";
+    public static final String KEY_ROLE_NAME      = "role_name";
     public static final String KEY_GIFT_ID      = "gid";
+    public static final String KEY_GIFT_Name      = "gift_name";
 
     public static final String KEY_ID           = "_id";
 
@@ -45,6 +51,10 @@ public class CheckInDao {
                     KEY_USER_ACCOUNT+" like ? or "+
                     KEY_USER_NAME+" like ? or "+
                     KEY_USER_COMPANY+" like ?";
+
+    private static final String QUERY_BY_USER_ID_SECTION =KEY_USER_ID+" = ?";
+    private static final String QUERY_BY_ROLE_ID_SECTION =KEY_ROLE_ID+" = ?";
+    private static final String QUERY_BY_GIFT_ID_SECTION =KEY_GIFT_ID+" = ?";
 
     private Context context;
     private SQLiteDatabase db;
@@ -69,7 +79,7 @@ public class CheckInDao {
         db.close();
     }
 
-    public void insertToUser(int uid,String name,String company,String account,String email) {
+    public void insertToUser(int uid,String name,String company,String account,String email,String phone) {
         open();
 
         ContentValues contentValues = new ContentValues();
@@ -78,6 +88,7 @@ public class CheckInDao {
         contentValues.put(KEY_USER_ID, uid);
         contentValues.put(KEY_USER_ACCOUNT, account);
         contentValues.put(KEY_USER_EMAIL, email);
+        contentValues.put(KEY_USER_PHONE, phone);
 
         db.insert(TABLE_USER, null, contentValues);
 
@@ -140,6 +151,8 @@ public class CheckInDao {
         getCheckInDatabaseHelperInstance().deleteTable(db,CheckInDao.TABLE_EVENT);
         getCheckInDatabaseHelperInstance().deleteTable(db,CheckInDao.TABLE_USER_ROLE);
         getCheckInDatabaseHelperInstance().deleteTable(db,CheckInDao.TABLE_GIFT_ROLE);
+        getCheckInDatabaseHelperInstance().deleteTable(db,CheckInDao.TABLE_ROLE);
+        getCheckInDatabaseHelperInstance().deleteTable(db,CheckInDao.TABLE_GIFT);
         close();
     }
 
@@ -228,12 +241,77 @@ public class CheckInDao {
             cursor.close();
         }
         close();
-        for (User aUser:users) {
+       /* for (User aUser:users) {
             Log.v("222", "--getAllUsers: " + aUser.getName());
-        }
+        }*/
         return users;
 
 
   }
+
+    public int getRoleID(int uid){
+        int roleID=-1;
+        open();
+        if(isTableExist(TABLE_USER_ROLE)){
+            Cursor cursor = db.query(TABLE_USER_ROLE, null,QUERY_BY_USER_ID_SECTION,new String[] {String.valueOf(uid)}, null,null,null);
+            if (cursor.moveToFirst()) {
+                roleID=cursor.getInt(cursor.getColumnIndex(KEY_ROLE_ID));
+                Log.v("222","roleID: "+roleID);
+            }
+            cursor.close();
+        }
+
+        close();
+        return  roleID;
+    }
+
+    public String getRoleName(int rid){
+        String roleName="-1";
+        open();
+        if(isTableExist(TABLE_ROLE)){
+            Cursor cursor = db.query(TABLE_ROLE, null,QUERY_BY_ROLE_ID_SECTION,new String[] {String.valueOf(rid)}, null,null,null);
+            if (cursor.moveToFirst()) {
+                roleName=cursor.getString(cursor.getColumnIndex(KEY_ROLE_NAME));
+                Log.v("222","roleName: "+roleName);
+            }
+            cursor.close();
+        }
+
+        close();
+        return  roleName;
+    }
+
+
+    public List<Gift> getGifts(int rid){
+        List<Gift> gifts = new ArrayList<Gift>();
+        open();
+        if(isTableExist(TABLE_GIFT_ROLE)){
+            Cursor cursor = db.query(TABLE_GIFT_ROLE, null,QUERY_BY_ROLE_ID_SECTION,new String[] {String.valueOf(rid)}, null,null,null);
+
+            if (cursor.moveToFirst()) {
+                do {
+                    Gift aGift= new Gift();
+                    int gid=cursor.getInt(cursor.getColumnIndex(KEY_GIFT_ID));
+                    Log.v("222","gid: "+gid);
+                    if(isTableExist(TABLE_GIFT)){
+                        Cursor gift_cursor = db.query(TABLE_GIFT, null,QUERY_BY_GIFT_ID_SECTION,new String[] {String.valueOf(gid)}, null,null,null);
+                        if (cursor.moveToFirst()) {
+                            aGift.setName(gift_cursor.getString(cursor.getColumnIndex(KEY_GIFT_Name)));
+                            Log.v("222","gid_name: "+aGift.getName());
+                        }
+                       gift_cursor.close();
+                    }
+
+                    gifts.add(aGift);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
+        close();
+
+        return gifts;
+
+
+    }
 
 }

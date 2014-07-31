@@ -19,11 +19,26 @@ public class CheckInDatabaseHelper extends SQLiteOpenHelper{
                     + CheckInDao.KEY_MEETING_NAME + " text"+
                     ");";
 
+    private static final String CREATE_ROLE_TABLE =
+            "CREATE TABLE "+ CheckInDao.TABLE_ROLE +
+                    "("+ CheckInDao.KEY_ROLE_ID +" INTEGER PRIMARY KEY, "
+                    + CheckInDao.KEY_ROLE_NAME + " text"+
+                    ");";
+
+    private static final String CREATE_GIFT_TABLE =
+            "CREATE TABLE "+ CheckInDao.TABLE_GIFT +
+                    "("+ CheckInDao.KEY_USER_ID + " INTEGER PRIMARY KEY, "
+                    + CheckInDao.KEY_GIFT_ID +" INTEGER, "
+                    + CheckInDao.KEY_ROLE_ID + " INTEGER"
+                    + ");";
+
     private static final String CREATE_USER_TABLE =
             "CREATE TABLE "+ CheckInDao.TABLE_USER +
                     "("+ CheckInDao.KEY_USER_ID + " INTEGER PRIMARY KEY, "
                     + CheckInDao.KEY_USER_NAME  + " text, "
                     + CheckInDao.KEY_USER_ACCOUNT  + " text, "
+                    + CheckInDao.KEY_USER_EMAIL  + " text, "
+                    + CheckInDao.KEY_USER_PHONE  + " text, "
                     + CheckInDao.KEY_USER_COMPANY + " text "
                     +");";
 
@@ -68,6 +83,8 @@ public class CheckInDatabaseHelper extends SQLiteOpenHelper{
         deleteTable(db,CheckInDao.TABLE_EVENT);
         deleteTable(db,CheckInDao.TABLE_GIFT_ROLE);
         deleteTable(db,CheckInDao.TABLE_USER_ROLE);
+        deleteTable(db,CheckInDao.TABLE_ROLE);
+        deleteTable(db,CheckInDao.TABLE_GIFT);
         onCreate(db);
     }
 
@@ -78,6 +95,8 @@ public class CheckInDatabaseHelper extends SQLiteOpenHelper{
         db.execSQL(CREATE_MEETING_TABLE);
         db.execSQL(CREATE_GIFT_ROLE_TATLE);
         db.execSQL(CREATE_USER_ROLE_TABLE);
+        db.execSQL(CREATE_ROLE_TABLE);
+        db.execSQL(CREATE_GIFT_TABLE);
     }
 
     public void deleteTable(SQLiteDatabase db,String $table_name){

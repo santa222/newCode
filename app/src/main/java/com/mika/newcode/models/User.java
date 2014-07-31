@@ -2,6 +2,7 @@ package com.mika.newcode.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -17,7 +18,8 @@ public class User extends CRModel implements Parcelable{
     protected String account;
     @SerializedName("email")
     protected String email;
-
+    @SerializedName("mobile_phone")
+    protected String mobile_phone;
 
     public int getUid() {
         return uid;
@@ -29,29 +31,40 @@ public class User extends CRModel implements Parcelable{
 
 
     public String getCompany() {
+        if(company==null) company="";
         return company;
     }
 
     public void setCompany(String company) {
-        this.company = company;
+            this.company = company;
     }
 
     public String getAccount() {
+        if(account==null) account="";
         return account;
     }
 
     public void setAccount(String account) {
-        this.account = account;
+            this.account = account;
     }
 
     public String getEmail() {
+        if(email==null) email="";
         return email;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+            this.email = email;
     }
 
+    public String getMobilePhone() {
+        if(mobile_phone==null) mobile_phone="";
+        return mobile_phone;
+    }
+
+    public void setMobilePhone(String mobile_phone) {
+         this.mobile_phone = mobile_phone;
+    }
 
     @Override
     public int describeContents() {
@@ -60,17 +73,26 @@ public class User extends CRModel implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest,flags);
         dest.writeInt(uid);
-        dest.writeString(name);
-        dest.writeString(account);
         dest.writeString(company);
-       // dest.writeParcelable(image, flags);
+        dest.writeString(account);
+        dest.writeString(email);
+        dest.writeString(mobile_phone);
+        Log.v("222","writeToParcel: ");
     }
 
-    private static final Creator<User> CREATOR = new Creator<User>() {
+    public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
         public User createFromParcel(Parcel source) {
-            return null;
+            User aUser=new User();
+            aUser.setUid(source.readInt());
+            aUser.setCompany(source.readString());
+            aUser.setAccount(source.readString());
+            aUser.setEmail(source.readString());
+            aUser.setMobilePhone(source.readString());
+            Log.v("222","user.uid: "+aUser.getUid()+"company: "+aUser.getCompany());
+            return aUser;
         }
 
         @Override
