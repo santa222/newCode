@@ -70,4 +70,13 @@
 
     </LinearLayout>
 
+    <ProgressBar
+        style="android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/option_progressBar"
+        android:visibility="invisible"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="60dp" />
+
 </LinearLayout>

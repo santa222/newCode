@@ -27,24 +27,24 @@ public class UserDetailActivity extends Activity {
         setContentView(R.layout.activity_user_detail);
 
         checkInDao=new CheckInDao(this);
-       // Bundle bundle = getIntent().getExtras();
-
+        Bundle bundle = getIntent().getExtras();
+        //===========
+        User testUser=(User)bundle.getParcelable(Constants.KEY_USER_INFO);
         User myUser=new User();
         myUser.setMobilePhone("2323232");
-        myUser.setEmail("adald@tom.com");
+        myUser.setMail("adald@tom.com");
         myUser.setUid(3);
-        //===========
-         Bundle bundle=new Bundle();
+
+         bundle=new Bundle();
          bundle.putParcelable(Constants.KEY_USER_INFO,myUser);
-         bundle.putInt("testINT",33);
         //============
 
 
         User aUser=(User)bundle.getParcelable(Constants.KEY_USER_INFO);
-        String email=aUser.getEmail();
+        Log.v("222","detail name: "+aUser.getName());
+        String email=aUser.getMail();
         String name=aUser.getName();
         int uid=aUser.getUid();
-        //Log.v("222","uid: "+aUser.getMobilePhone());
 
         TextView email_tv = (TextView) findViewById(R.id.profile_email);
         TextView name_tv = (TextView) findViewById(R.id.profile_name);

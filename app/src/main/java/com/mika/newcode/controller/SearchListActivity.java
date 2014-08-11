@@ -3,7 +3,6 @@ package com.mika.newcode.controller;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -41,12 +40,19 @@ public class SearchListActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 User selectedUser=users.get(position);
-               /* Bundle bundle=new Bundle();
-                bundle.putParcelable(Constants.KEY_USER_INFO,selectedUser);
-                bundle.putInt("testINT",33);*/
-                Log.v("222", selectedUser.getName());
+                Bundle bundle=new Bundle();
+
+                User myUser=new User();
+               // myUser.setAccount(selectedUser.getAccount());
+                myUser.setMobilePhone("2323232");
+                myUser.setMail("adald@tom.com");
+                myUser.setUid(3);
+
+                bundle.putParcelable(Constants.KEY_USER_INFO,myUser);
+                //==========
+
                 Intent intent=new Intent(SearchListActivity.this, UserDetailActivity.class);
-                //intent.putExtras(bundle);
+                intent.putExtras(bundle);
                 startActivity(intent);
 
 

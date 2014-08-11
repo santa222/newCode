@@ -100,7 +100,6 @@ public class OptionActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                //downloadDB();
                 startActivity(new Intent(OptionActivity.this, SearchListActivity.class));
             }
         });
@@ -121,13 +120,12 @@ public class OptionActivity extends Activity {
 
     //clear database
     private void clearDB(){
-        Log.v("222","clearDB");
         checkInDao.deleteAll();
     }
 
     //update database
     private void uploadDB(){
-        Log.v("222","updateDB");
+        Log.v("222", "updateDB");
 
     }
 
@@ -158,7 +156,7 @@ public class OptionActivity extends Activity {
 
         List<User> users = result.getUsers();
         for (User aUser:users) {
-            checkInDao.insertToUser(aUser.getUid(), aUser.getName(), aUser.getCompany(),aUser.getAccount(),aUser.getEmail(),aUser.getMobilePhone());
+            checkInDao.insertToUser(aUser.getUid(), aUser.getName(), aUser.getCompany(),aUser.getAccount(),aUser.getMail(),aUser.getMobilePhone());
         }
         List<UserRole> userRoles = result.getUserRoles();
         for (UserRole aUserRole:userRoles) {

@@ -36,7 +36,7 @@ public class CheckInDao {
     public static final String KEY_USER_NAME       = "user_name";
     public static final String KEY_USER_COMPANY      = "company";
     public static final String KEY_USER_ACCOUNT      = "account";
-    public static final String KEY_USER_EMAIL      = "email";
+    public static final String KEY_USER_MAIL      = "mail";
     public static final String KEY_USER_PHONE      = "phone";
 
     public static final String KEY_EVENT_ID      = "eid";
@@ -87,7 +87,7 @@ public class CheckInDao {
         contentValues.put(KEY_USER_COMPANY, company);
         contentValues.put(KEY_USER_ID, uid);
         contentValues.put(KEY_USER_ACCOUNT, account);
-        contentValues.put(KEY_USER_EMAIL, email);
+        contentValues.put(KEY_USER_MAIL, email);
         contentValues.put(KEY_USER_PHONE, phone);
 
         db.insert(TABLE_USER, null, contentValues);
@@ -235,6 +235,7 @@ public class CheckInDao {
                     aUser.setCompany(cursor.getString(cursor.getColumnIndex(KEY_USER_COMPANY)));
                     aUser.setName(cursor.getString(cursor.getColumnIndex(KEY_USER_NAME)));
                     aUser.setAccount(cursor.getString(cursor.getColumnIndex(KEY_USER_ACCOUNT)));
+                    aUser.setMail(cursor.getString(cursor.getColumnIndex(KEY_USER_MAIL)));
                     users.add(aUser);
                 } while (cursor.moveToNext());
             }

@@ -50,7 +50,7 @@ public class ListAdapter extends ArrayAdapter<User>{
         viewHolder.account.setText("用户名： "+item.getAccount());
         viewHolder.name.setText("姓名： "+item.getName());
         viewHolder.company.setText("公司： "+item.getCompany());
-        viewHolder.email.setText("邮箱： "+item.getEmail());
+        viewHolder.email.setText("邮箱： "+item.getMail());
         // AQuery query = new AQuery(getContext());
         //query.id(viewHolder.rowIcon).image(item.getImage().getImageForDensity(CRImage.IMAGE_TYPE.SMALL,(Activity)getContext()));
 

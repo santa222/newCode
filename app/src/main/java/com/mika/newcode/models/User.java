@@ -12,12 +12,12 @@ import com.google.gson.annotations.SerializedName;
 public class User extends CRModel implements Parcelable{
     @SerializedName("uid")
     protected int uid;
-    @SerializedName("company")
-    protected String company;
     @SerializedName("account")
     protected String account;
-    @SerializedName("email")
-    protected String email;
+    @SerializedName("company")
+    protected String company;
+    @SerializedName("mail")
+    protected String mail;
     @SerializedName("mobile_phone")
     protected String mobile_phone;
 
@@ -48,13 +48,13 @@ public class User extends CRModel implements Parcelable{
             this.account = account;
     }
 
-    public String getEmail() {
-        if(email==null) email="";
-        return email;
+    public String getMail() {
+        if(mail==null) mail="";
+        return mail;
     }
 
-    public void setEmail(String email) {
-            this.email = email;
+    public void setMail(String email) {
+            this.mail = email;
     }
 
     public String getMobilePhone() {
@@ -77,22 +77,24 @@ public class User extends CRModel implements Parcelable{
         dest.writeInt(uid);
         dest.writeString(company);
         dest.writeString(account);
-        dest.writeString(email);
+        dest.writeString(mail);
         dest.writeString(mobile_phone);
-        Log.v("222","writeToParcel: ");
+       // Log.v("222","writeToParcel: ");
+
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
         public User createFromParcel(Parcel source) {
-            User aUser=new User();
+            /*User aUser=new User();
             aUser.setUid(source.readInt());
             aUser.setCompany(source.readString());
             aUser.setAccount(source.readString());
-            aUser.setEmail(source.readString());
+            aUser.setMail(source.readString());
             aUser.setMobilePhone(source.readString());
             Log.v("222","user.uid: "+aUser.getUid()+"company: "+aUser.getCompany());
-            return aUser;
+            return aUser;*/
+            return null;
         }
 
         @Override

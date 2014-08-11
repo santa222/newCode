@@ -37,7 +37,7 @@ public class CheckInDatabaseHelper extends SQLiteOpenHelper{
                     "("+ CheckInDao.KEY_USER_ID + " INTEGER PRIMARY KEY, "
                     + CheckInDao.KEY_USER_NAME  + " text, "
                     + CheckInDao.KEY_USER_ACCOUNT  + " text, "
-                    + CheckInDao.KEY_USER_EMAIL  + " text, "
+                    + CheckInDao.KEY_USER_MAIL  + " text, "
                     + CheckInDao.KEY_USER_PHONE  + " text, "
                     + CheckInDao.KEY_USER_COMPANY + " text "
                     +");";
