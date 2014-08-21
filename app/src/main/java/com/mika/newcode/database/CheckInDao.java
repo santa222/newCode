@@ -43,7 +43,9 @@ public class CheckInDao {
     public static final String KEY_ROLE_ID      = "rid";
     public static final String KEY_ROLE_NAME      = "role_name";
     public static final String KEY_GIFT_ID      = "gid";
-    public static final String KEY_GIFT_Name      = "gift_name";
+    public static final String KEY_GIFT_NAME      = "gift_name";
+    public static final String KEY_GIFT_NUM      = "gift_num";
+    public static final String KEY_GIFT_URL      = "gift_url";
 
     public static final String KEY_ID           = "_id";
 
@@ -89,7 +91,6 @@ public class CheckInDao {
         contentValues.put(KEY_USER_ACCOUNT, account);
         contentValues.put(KEY_USER_MAIL, email);
         contentValues.put(KEY_USER_PHONE, phone);
-
         db.insert(TABLE_USER, null, contentValues);
 
         close();
@@ -134,13 +135,30 @@ public class CheckInDao {
     }
     public void insertToGiftRole(int gid,int rid) {
         open();
-
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_GIFT_ID, gid);
         contentValues.put(KEY_ROLE_ID, rid);
-
         db.insert(TABLE_GIFT_ROLE, null, contentValues);
+        close();
+    }
 
+    public void insertToGift(int gid,String gName,int gNum,String gURL) {
+        open();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_GIFT_ID, gid);
+        contentValues.put(KEY_GIFT_NUM, gNum);
+        contentValues.put(KEY_GIFT_NAME, gName);
+        contentValues.put(KEY_GIFT_URL, gURL);
+        db.insert(TABLE_GIFT, null, contentValues);
+        close();
+    }
+
+    public void insertToRole(int rid,String rName) {
+        open();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_ROLE_ID, rid);
+        contentValues.put(KEY_ROLE_NAME, rName);
+        db.insert(TABLE_ROLE, null, contentValues);
         close();
     }
 
@@ -171,10 +189,10 @@ public class CheckInDao {
         close();
     }*/
 
-   public void printData(){
+   public void printData1(String table){
         open();
-        if(isTableExist(TABLE_MEETING)){
-            Cursor cursor = db.query(TABLE_MEETING, null,null,null, null, null, null);
+        if(isTableExist(table)){
+            Cursor cursor = db.query(table, null,null,null, null, null, null);
             if(cursor.moveToFirst()){
                 do{
                     Log.v("222",cursor.getString(0)+cursor.getString(1));
@@ -210,7 +228,6 @@ public class CheckInDao {
                     aMeeting.setMid(cursor.getInt(cursor.getColumnIndex(KEY_MEETING_ID)));
                     aMeeting.setName(cursor.getString(cursor.getColumnIndex(KEY_MEETING_NAME)));
                     meetingList.add(aMeeting);
-                    Log.v("222","--addMeetings: "+aMeeting.getName()+" "+aMeeting.getMid());
                 } while (cursor.moveToNext());
             }
             cursor.close();
@@ -236,19 +253,41 @@ public class CheckInDao {
                     aUser.setName(cursor.getString(cursor.getColumnIndex(KEY_USER_NAME)));
                     aUser.setAccount(cursor.getString(cursor.getColumnIndex(KEY_USER_ACCOUNT)));
                     aUser.setMail(cursor.getString(cursor.getColumnIndex(KEY_USER_MAIL)));
+                    aUser.setUid(cursor.getInt(cursor.getColumnIndex(KEY_USER_ID)));
                     users.add(aUser);
                 } while (cursor.moveToNext());
             }
             cursor.close();
         }
         close();
-       /* for (User aUser:users) {
-            Log.v("222", "--getAllUsers: " + aUser.getName());
+        /*for (User aUser:users) {
+            Log.v("222", "--getAllUsers: " + aUser.getName()+","+aUser.getUid());
         }*/
         return users;
 
 
   }
+
+    public User getUser(int uid){
+        open();
+        User aUser = new User();
+        if(isTableExist(TABLE_USER)){
+            Cursor cursor = db.query(TABLE_USER, null,QUERY_BY_USER_ID_SECTION,new String[] {String.valueOf(uid)}, null,null,null);
+
+            if (cursor.moveToFirst()) {
+                aUser = new User();
+                aUser.setCompany(cursor.getString(cursor.getColumnIndex(KEY_USER_COMPANY)));
+                aUser.setName(cursor.getString(cursor.getColumnIndex(KEY_USER_NAME)));
+                aUser.setAccount(cursor.getString(cursor.getColumnIndex(KEY_USER_ACCOUNT)));
+                aUser.setMail(cursor.getString(cursor.getColumnIndex(KEY_USER_MAIL)));
+                aUser.setMobilePhone(cursor.getString(cursor.getColumnIndex(KEY_USER_PHONE)));
+            }
+            cursor.close();
+        }
+
+        close();
+        return  aUser;
+    }
 
     public int getRoleID(int uid){
         int roleID=-1;
@@ -267,7 +306,7 @@ public class CheckInDao {
     }
 
     public String getRoleName(int rid){
-        String roleName="-1";
+        String roleName="无";
         open();
         if(isTableExist(TABLE_ROLE)){
             Cursor cursor = db.query(TABLE_ROLE, null,QUERY_BY_ROLE_ID_SECTION,new String[] {String.valueOf(rid)}, null,null,null);
@@ -277,7 +316,6 @@ public class CheckInDao {
             }
             cursor.close();
         }
-
         close();
         return  roleName;
     }
@@ -291,13 +329,15 @@ public class CheckInDao {
 
             if (cursor.moveToFirst()) {
                 do {
-                    Gift aGift= new Gift();
                     int gid=cursor.getInt(cursor.getColumnIndex(KEY_GIFT_ID));
                     Log.v("222","gid: "+gid);
+
+                    Gift aGift= new Gift();
                     if(isTableExist(TABLE_GIFT)){
                         Cursor gift_cursor = db.query(TABLE_GIFT, null,QUERY_BY_GIFT_ID_SECTION,new String[] {String.valueOf(gid)}, null,null,null);
-                        if (cursor.moveToFirst()) {
-                            aGift.setName(gift_cursor.getString(cursor.getColumnIndex(KEY_GIFT_Name)));
+                        if (gift_cursor.moveToFirst()) {
+                            aGift.setName(gift_cursor.getString(gift_cursor.getColumnIndex(KEY_GIFT_NAME)));
+                            aGift.setNumber(gift_cursor.getInt(gift_cursor.getColumnIndex(KEY_GIFT_NUM)));
                             Log.v("222","gid_name: "+aGift.getName());
                         }
                        gift_cursor.close();

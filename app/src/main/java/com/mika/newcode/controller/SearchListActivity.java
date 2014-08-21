@@ -3,6 +3,7 @@ package com.mika.newcode.controller;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -41,21 +42,13 @@ public class SearchListActivity extends Activity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 User selectedUser=users.get(position);
                 Bundle bundle=new Bundle();
-
-                User myUser=new User();
-               // myUser.setAccount(selectedUser.getAccount());
-                myUser.setMobilePhone("2323232");
-                myUser.setMail("adald@tom.com");
-                myUser.setUid(3);
-
-                bundle.putParcelable(Constants.KEY_USER_INFO,myUser);
-                //==========
+                bundle.putInt(Constants.KEY_USER_INFO,selectedUser.getUid());
 
                 Intent intent=new Intent(SearchListActivity.this, UserDetailActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
 
-
+                //checkInDao.printData(CheckInDao.TABLE_ROLE);//=========
             }
         });
         final EditText searchText= (EditText)this.findViewById(R.id.actionbar_search_input);

@@ -7,18 +7,18 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Role {
     @SerializedName("rid")
-    protected String rid;
+    protected int rid;
     @SerializedName("status")
     protected String status;
     @SerializedName("name")
     protected String name;
 
 
-    public String getRid() {
+    public int getRid() {
         return rid;
     }
 
-    public void setRid(String rid) {
+    public void setRid(int rid) {
         this.rid = rid;
     }
 

@@ -27,9 +27,10 @@ public class CheckInDatabaseHelper extends SQLiteOpenHelper{
 
     private static final String CREATE_GIFT_TABLE =
             "CREATE TABLE "+ CheckInDao.TABLE_GIFT +
-                    "("+ CheckInDao.KEY_USER_ID + " INTEGER PRIMARY KEY, "
-                    + CheckInDao.KEY_GIFT_ID +" INTEGER, "
-                    + CheckInDao.KEY_ROLE_ID + " INTEGER"
+                    "("+ CheckInDao.KEY_GIFT_ID + " INTEGER PRIMARY KEY, "
+                    + CheckInDao.KEY_GIFT_NAME +" text, "
+                    + CheckInDao.KEY_GIFT_URL +" text, "
+                    + CheckInDao.KEY_GIFT_NUM + " INTEGER"
                     + ");";
 
     private static final String CREATE_USER_TABLE =

@@ -28,23 +28,10 @@ public class UserDetailActivity extends Activity {
 
         checkInDao=new CheckInDao(this);
         Bundle bundle = getIntent().getExtras();
-        //===========
-        User testUser=(User)bundle.getParcelable(Constants.KEY_USER_INFO);
-        User myUser=new User();
-        myUser.setMobilePhone("2323232");
-        myUser.setMail("adald@tom.com");
-        myUser.setUid(3);
+        int uid=bundle.getInt(Constants.KEY_USER_INFO);
 
-         bundle=new Bundle();
-         bundle.putParcelable(Constants.KEY_USER_INFO,myUser);
-        //============
-
-
-        User aUser=(User)bundle.getParcelable(Constants.KEY_USER_INFO);
-        Log.v("222","detail name: "+aUser.getName());
-        String email=aUser.getMail();
-        String name=aUser.getName();
-        int uid=aUser.getUid();
+        User aUser=checkInDao.getUser(uid);
+        int rid=checkInDao.getRoleID(uid);
 
         TextView email_tv = (TextView) findViewById(R.id.profile_email);
         TextView name_tv = (TextView) findViewById(R.id.profile_name);
@@ -53,13 +40,12 @@ public class UserDetailActivity extends Activity {
         TextView gift_tv = (TextView) findViewById(R.id.profile_gift);
         TextView company_tv = (TextView) findViewById(R.id.profile_company);
 
-        email_tv.setText("邮箱： "+email);
-        //email_tv.setText("邮箱： "+null);
+        email_tv.setText("邮箱： "+aUser.getMail());
         name_tv.setText("姓名： "+aUser.getName());
-        role_tv.setText("角色： "+getRoleName(uid));
+        role_tv.setText("角色： "+checkInDao.getRoleName(rid));
         phone_tv.setText("电话： " + aUser.getMobilePhone());
         company_tv.setText("公司： "+aUser.getCompany());
-        //gift_tv.setText("礼品清单： "+getGift(uid));
+        gift_tv.setText("礼品清单： "+getGifts(uid));
 
         ImageView checkInBtn=(ImageView)findViewById(R.id.profile_checkin);
         checkInBtn.setOnClickListener(new View.OnClickListener() {
@@ -92,14 +78,14 @@ public class UserDetailActivity extends Activity {
 
     }
 
-    private String getRoleName(int uid){
-        int rid=checkInDao.getRoleID(uid);
-        return checkInDao.getRoleName(rid);
-    }
 
-    private List<Gift> getGifts(int uid){
-        int rid=checkInDao.getRoleID(uid);
-        return  checkInDao.getGifts(rid);
+    private String getGifts(int rid){
+        List<Gift> gifts=checkInDao.getGifts(13);//checkInDao.getGifts(rid);
+        StringBuilder giftListStr=new StringBuilder();
+        for(Gift aGift:gifts){
+            giftListStr.append("\n").append("\r").append(aGift.getName()).append(" X ").append(aGift.getNumber());
+        }
+        return  giftListStr.toString();
     }
 
 

@@ -7,22 +7,22 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Gift {
     @SerializedName("gid")
-    protected String gid;
+    protected int gid;
     @SerializedName("img_path")
     protected String img_path;
     @SerializedName("number")
-    protected String number;
+    protected int number;
     @SerializedName("name")
     protected String name;
     @SerializedName("status")
     protected String status;
 
 
-    public String getGid() {
+    public int getGid() {
         return gid;
     }
 
-    public void setGid(String gid) {
+    public void setGid(int gid) {
         this.gid = gid;
     }
 
@@ -45,11 +45,11 @@ public class Gift {
     }
 
 
-    public String getNumber() {
+    public int getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 

@@ -10,33 +10,28 @@
         android:id="@+id/row_user_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:textSize="15dp"
         android:text="title"
-        android:textStyle="bold" />
+        style="@style/Text" />
 
     <TextView
         android:id="@+id/row_user_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
-        android:text="title"
-        android:textStyle="bold" />
+        style="@style/Text"
+        android:text="title" />
 
     <TextView
         android:id="@+id/row_user_company"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
-        android:textStyle="bold"
+        style="@style/Text"
         android:text="company"/>
 
     <TextView
         android:id="@+id/row_user_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
-        android:textStyle="bold"
+        style="@style/Text"
         android:text="email"/>
 
 </LinearLayout>

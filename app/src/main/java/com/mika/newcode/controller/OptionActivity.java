@@ -14,8 +14,10 @@ import com.mika.newcode.R;
 import com.mika.newcode.builders.DynamicContentTaskBuilder;
 import com.mika.newcode.database.CheckInDao;
 import com.mika.newcode.models.AllData;
+import com.mika.newcode.models.Gift;
 import com.mika.newcode.models.GiftRole;
 import com.mika.newcode.models.Meeting;
+import com.mika.newcode.models.Role;
 import com.mika.newcode.models.User;
 import com.mika.newcode.models.UserRole;
 import com.mika.newcode.network.request.GetDynamicContent;
@@ -149,32 +151,41 @@ public class OptionActivity extends Activity {
     }
 
     private void storeData(AllData result){
+        //meeting
         List<Meeting> meetings = result.getMeetings();
         for (Meeting meeting:meetings) {
             checkInDao.insertToMeeting(meeting.getMid(),meeting.getName());
         }
-
+        //user
         List<User> users = result.getUsers();
         for (User aUser:users) {
             checkInDao.insertToUser(aUser.getUid(), aUser.getName(), aUser.getCompany(),aUser.getAccount(),aUser.getMail(),aUser.getMobilePhone());
         }
+        //user_role
         List<UserRole> userRoles = result.getUserRoles();
         for (UserRole aUserRole:userRoles) {
             checkInDao.insertToUserRole(aUserRole.getRid(), aUserRole.getUid());
         }
+        //gift_role
         List<GiftRole> giftRoles = result.getGiftRoles();
         for (GiftRole giftRole:giftRoles) {
             checkInDao.insertToGiftRole(giftRole.getGid(), giftRole.getRid());
         }
-/*
+        //gift
+        List<Gift> gifts = result.getGifts();
+        for (Gift gift:gifts) {
+            checkInDao.insertToGift(gift.getGid(), gift.getName(),gift.getNumber(),gift.getImg_path());
+        }
+        //role
+        List<Role> roles = result.getRoles();
+        for (Role role:roles) {
+            checkInDao.insertToRole(role.getRid(), role.getName());
+        }
 
-        List<Event> events = result.getEvents();
+        /*List<Event> events = result.getEvents();
         for (Event aEvent:events) {
             checkInDao.insertToEvent(aEvent.getEid(),aEvent.getUid(),aEvent.getJoined(),aEvent.getJoined_time(),aEvent.getMid());
-        }
-*/
-
-        //checkInDao.printData();
+        }*/
 
         Toast.makeText(OptionActivity.this,getResources().getString(R.string.download_success),Toast.LENGTH_LONG).show();
     }
